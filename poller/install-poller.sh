@@ -1,4 +1,4 @@
-#1/bin/sh
+#!/bin/sh
 
 ### This has been tested with CentOS 6.x x86_64 
 ###  
