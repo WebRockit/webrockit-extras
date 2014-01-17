@@ -18,7 +18,7 @@ yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
 curl -L get.rvm.io | bash -s stable
 source /etc/profile.d/rvm.sh
 rvm requirements
-rvm install 2.01
+rvm install 2.0
 rvm use 2.0 --default
 rvm rubygems current
 
