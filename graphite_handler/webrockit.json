@@ -1,0 +1,19 @@
+{
+  "handlers": {
+    "webrockit": {
+      "type": "set",
+      "handlers": [
+        "webrockit_graphite"
+      ]
+    },
+    "webrockit_graphite": {
+      "type": "pipe",
+      "command": "/etc/sensu/handlers/metrics/webrockit_graphite.rb"
+    }
+  },
+  "graphite": {
+    "server":"graphite.server.com",
+    "port":"2003",
+    "prefix":""
+  }
+}
