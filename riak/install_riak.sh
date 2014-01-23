@@ -5,4 +5,5 @@ grep storage_backend /etc/riak/app.config |grep riak_kv_eleveldb_backend ||echo 
 chkconfig riak on
 echo '*               soft     nofile          65536' >> /etc/security/limits.conf
 echo '*               hard     nofile          65536' >> /etc/security/limits.conf
+echo 'Defaults:root !requiretty' >> /etc/sudoers.d/riak
 /etc/init.d/riak start
