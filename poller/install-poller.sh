@@ -25,15 +25,6 @@ rvm rubygems current
 # Install gem: ghost
 gem install ghost
 
-# Install sensu sudoers file
-
-echo 'Defaults:sensu !requiretty
-Defaults:sensu secure_path = /opt/phantomjs/bin:/opt/phantomjs/collectoids:/opt/nodejs/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-sensu ALL = NOPASSWD: /opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb
-sensu ALL = NOPASSWD: /usr/local/bin/ghost
-' > /etc/sudoers.d/sensu
-
 # test poller:
 
 /opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb --url http://github.com | egrep 'requests|notfound|redirects|timetofirstbyte|htmlsize|domains|contentlength|ondomreadytime|windowonloadtime|httptrafficcompleted'
