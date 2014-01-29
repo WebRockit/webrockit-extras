@@ -2,13 +2,20 @@
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-handler'
 require 'socket'
+require 'timeout'
 
 class Webrockit < Sensu::Handler
   def filter; end
 
   def handle
-    #fire up a udp socket and send this metric off
-    s = UDPSocket.new
+
+    #give the user the option to do udp vs tcp
+    if settings['graphite']['protocol'] == 'tcp'
+      s = TCPSocket.new(settings['graphite']['server'], settings['graphite']['port'])
+    else
+      #fire up a udp socket and send this metric off
+      s = UDPSocket.new
+    end
 
     #webrockit runner scripts return output seperated by  \n
     lines = @event['check']['output'].split("\n")
@@ -23,12 +30,24 @@ class Webrockit < Sensu::Handler
 
       #create the thing being sent to graphite
       prefix = settings['graphite']['prefix']
-      message = "#{prefix}#{check_name}.#{postfix} #{value} #{ts}"
+      message = "#{prefix}.#{check_name}.#{postfix} #{value} #{ts}"
 
-      #fire off to graphite server
-      server = settings['graphite']['server']
-      port = settings['graphite']['port']
-      s.send(message, 0, server, port)
+      if settings['graphite']['protocol'] == 'tcp'
+        timeout(3) do
+          s.puts message
+          s.flush
+        end
+      else
+        #fire off to graphite server
+        server = settings['graphite']['server']
+        port = settings['graphite']['port']
+        s.send(message, 0, server, port)
+      end
     end
+
+    if settings['graphite']['protocol'] == 'tcp'
+      s.close
+    else
+
   end
 end
