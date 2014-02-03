@@ -47,7 +47,7 @@ class Webrockit < Sensu::Handler
 
     if settings['graphite']['protocol'] == 'tcp'
       s.close
-    else
+    end
 
   end
 end
