@@ -30,7 +30,7 @@ class Webrockit < Sensu::Handler
 
       #create the thing being sent to graphite
       prefix = settings['graphite']['prefix']
-      message = "#{prefix}.#{check_name}.#{postfix} #{value} #{ts}"
+      message = "#{prefix}#{check_name}.#{postfix} #{value} #{ts}"
 
       if settings['graphite']['protocol'] == 'tcp'
         timeout(3) do
