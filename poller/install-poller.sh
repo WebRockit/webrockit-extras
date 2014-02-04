@@ -25,6 +25,14 @@ rvm rubygems current
 # Install gem: ghost
 gem install ghost
 
+# adjust sensu to match number of cores available x2, with a minimum of 4
+CORES=`grep processor /proc/cpuinfo | tail -n1 | awk '{print $NF+1}'`
+if [ ${CORES} -lt 4 ]; then CORES=4; fi
+if [ -e "/opt/sensu/embedded/lib/ruby/gems/2.0.0/gems/eventmachine-1.0.3/lib/eventmachine.rb" ]; then
+  sed -i -c -e 's/EventMachine.threadpool_size\ =\ 20/EventMachine.threadpool_size\ =\ '${CORES}'/g' /opt/sensu/embedded/lib/ruby/gems/2.0.0/gems/eventmachine-1.0.3/lib/eventmachine.rb
+fi
+
+
 # test poller:
 
 /opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb --url http://github.com | egrep 'requests|notfound|redirects|timetofirstbyte|htmlsize|domains|contentlength|ondomreadytime|windowonloadtime|httptrafficcompleted'
