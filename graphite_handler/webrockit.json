@@ -15,6 +15,6 @@
     "server":"graphite.server.com",
     "port":"2003",
     "prefix":"test.webrockit.",
-    "protocol":"udp"
+    "protocol":"tcp"
   }
 }
