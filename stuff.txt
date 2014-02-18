@@ -1,0 +1,5 @@
+ec2west.gdwebrockit.net -> ec2-54-219-74-207.us-west-1.compute.amazonaws.com
+ec2east.gdwebrockit.net -> ec2-107-22-25-71.compute-1.amazonaws.com
+ec2euir.gdwebrockit.net -> ec2-54-216-8-106.eu-west-1.compute.amazonaws.com
+ec2apsing.gdwebrockit.net -> ec2-54-251-222-221.ap-southeast-1.compute.amazonaws.com
+ec2sasp.gdwebrockit.net -> ec2-54-207-141-249.sa-east-1.compute.amazonaws.com
