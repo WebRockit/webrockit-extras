@@ -35,4 +35,4 @@ fi
 
 # test poller:
 
-/opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb --url http://github.com | egrep 'requests|notfound|redirects|timetofirstbyte|htmlsize|domains|contentlength|ondomreadytime|windowonloadtime|httptrafficcompleted'
+/opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb --url http://github.com
