@@ -32,6 +32,8 @@ if [ -e "/opt/sensu/embedded/lib/ruby/gems/2.0.0/gems/eventmachine-1.0.3/lib/eve
   sed -i -c -e 's/EventMachine.threadpool_size\ =\ 20/EventMachine.threadpool_size\ =\ '${CORES}'/g' /opt/sensu/embedded/lib/ruby/gems/2.0.0/gems/eventmachine-1.0.3/lib/eventmachine.rb
 fi
 
+# why aren't you using sudoers.d?
+egrep -q '^#includedir /etc/sudoers.d$' /etc/sudoers || echo '#includedir /etc/sudoers.d' >> /etc/sudoers
 
 # test poller:
 
