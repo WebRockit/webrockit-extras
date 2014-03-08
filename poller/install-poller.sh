@@ -18,8 +18,8 @@ yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
 curl -L get.rvm.io | bash -s stable
 source /etc/profile.d/rvm.sh
 rvm requirements
-rvm install 2.0
-rvm use 2.0 --default
+rvm install 2.0.0-p451
+rvm use 2.0.0-p451 --default
 rvm rubygems current
 
 # Install gem: ghost
