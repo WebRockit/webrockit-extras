@@ -19,8 +19,8 @@ curl -L get.rvm.io | sudo bash -s stable
 source /etc/profile.d/rvm.sh
 sudo rvm requirements
 sudo rvm install 2.0.0-p451
-sudo rvm use 2.0.0-p451 --default
-sudo rvm rubygems current
+rvm use 2.0.0-p451 --default
+rvm rubygems current
 
 # Install gem: ghost
 sudo gem install ghost
@@ -33,7 +33,7 @@ if [ -e "/opt/sensu/embedded/lib/ruby/gems/2.0.0/gems/eventmachine-1.0.3/lib/eve
 fi
 
 # why aren't you using sudoers.d?
-sudo egrep -q '^#includedir /etc/sudoers.d$' /etc/sudoers || echo '#includedir /etc/sudoers.d' >> /etc/sudoers
+sudo bash -c "egrep -q '^#includedir /etc/sudoers.d$' /etc/sudoers || sudo -- echo '#includedir /etc/sudoers.d' >> /etc/sudoers"
 
 # test poller:
 
