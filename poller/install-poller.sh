@@ -9,7 +9,7 @@
 sudo yum -y install wget freetype fontconfig
 
 # Install WebRockit repo
-wget http://yum.webrockit.io/repos/webrockit.repo -O /etc/yum.repos.d/webrockit.repo
+sudo wget http://yum.webrockit.io/repos/webrockit.repo -O /etc/yum.repos.d/webrockit.repo
 
 # Install webRockit poller packages
 sudo yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
