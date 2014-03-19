@@ -1,15 +1,15 @@
 #!/bin/sh
 
-### This has been tested with CentOS 6.x x86_64 
-###  
-### Automate this by running:  
+### This has been tested with CentOS 6.x x86_64
+###
+### Automate this by running:
 ###    curl -L http://x.co/wrclientc6  | bash -s stable
 
 # Install some base requirements
-yum -y install wget freetype fontconfig 
+yum -y install wget freetype fontconfig
 
 # Install WebRockit repo
-wget https://bintray.com/webrockit/webrockit/rpm -O /etc/yum.repos.d/bintray-webrockit-webrockit.repo --no-check-certificate 
+wget http://yum.webrockit.io/repos/webrockit.repo -O /etc/yum.repos.d/webrockit.repo
 
 # Install webRockit poller packages
 yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
