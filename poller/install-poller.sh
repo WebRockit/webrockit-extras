@@ -6,17 +6,16 @@
 ###    curl -L http://x.co/wrclientc6  | bash -s stable
 
 # Install some base requirements
-sudo yum -y install wget freetype fontconfig
+yum -y install wget freetype fontconfig
 
 # Install WebRockit repo
-sudo wget http://yum.webrockit.io/repos/webrockit.repo -O /etc/yum.repos.d/webrockit.repo
+wget http://yum.webrockit.io/repos/webrockit.repo -O /etc/yum.repos.d/webrockit.repo
 
 # Install webRockit poller packages
-sudo yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
+yum -y install webrockit-poller webrockit-phantomas webrockit-nodejs-bin
 
 # TODO: convert this to use Sensu omnibus ruby
 # Install ruby 2.0 with rvm, as root under CentOS 5
-sudo su -
 curl -L get.rvm.io |  bash -s stable
 source /etc/profile.d/rvm.sh
 rvm requirements
