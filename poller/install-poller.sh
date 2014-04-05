@@ -36,6 +36,9 @@ fi
 # why aren't you using sudoers.d?
 bash -c "egrep -q '^#includedir /etc/sudoers.d$' /etc/sudoers || sudo -- echo '#includedir /etc/sudoers.d' >> /etc/sudoers"
 
+# TODO: move this into poller rpm
+egrep -q GEM_HOME /etc/sudoers.d/sensu || echo 'Defaults:sensu env_keep=GEM_HOME' >> /etc/sudoers.d/sensu
+
 # test poller:
 
 /opt/phantomjs/collectoids/webrockit-poller/webrockit-poller.rb --url http://github.com
