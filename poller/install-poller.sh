@@ -25,6 +25,8 @@ export OLD_GEM_PATH=${GEM_PATH}
 export GEM_PATH=/opt/sensu/embedded/lib/ruby/gems/2.0.0:${GEM_PATH}
 # Install gem: ghost, into Sensu path
 /opt/sensu/embedded/bin/gem install ghost
+# fix ghost to use sensu's ruby
+sed -i -c -e '1s/^.*$/#!\/opt\/sensu\/embedded\/bin\/ruby/' /opt/phantomjs/collectoids/webrockit-poller/ghost
 export GEM_PATH=${OLD_GEM_PATH}
 
 # Install some base requirements
