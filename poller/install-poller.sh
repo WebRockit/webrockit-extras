@@ -6,7 +6,7 @@
 ###    curl -L http://x.co/wrclientc6  | bash -s stable
 
 # We need the Sensu client to be installed. Let's check for it.
-if [! -e /opt/sensu/embedded/bin/gem ]; then
+if [ ! -e /opt/sensu/embedded/bin/gem ]; then
    echo "Please install the Sensu client."
    echo "See:  http://sensuapp.org/docs/0.12/guide"
    echo ""
