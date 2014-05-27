@@ -88,6 +88,7 @@ touch ${tmpbdir}/rabbitmqca/index.txt
 echo 01 > ${tmpbdir}/rabbitmqca/serial
 echo "DIE"; exit;
 cd ${tmpbdir}/rabbitmqca
+# XXTODO Put this on github
 wget -O "${tmpbdir}/openssl.cnf" 'https://raw.github.com/WebRockit/webrockit-extras/master/rabbitmq/openssl.cnf'
 openssl req -x509 -config ../openssl.cnf -newkey rsa:2048 -days 40000 -out cacert.pem -outform PEM -subj /CN=TestCA/ -nodes
 openssl x509 -in cacert.pem -out cacert.cer -outform DER
@@ -108,6 +109,16 @@ cp ${tmpbdir}/sensu_ca/cacert.pem /etc/rabbitmq/ssl/cacert.pem
 cp ${tmpbdir}server/cert.pem /etc/rabbitmq/ssl/server_cert.pem
 cp server/key.pem /etc/rabbitmq/ssl/server_key.pem
 
+
+# XXTODO Put skeleton Sensu conf on github
+# Wget Sensu skeleton temple
+# Replace skeleton template with local config values
+# Install sensu server repo
+# install sensu server rpm
+# configure sensu server to start
+# start rabbitmq
+# start sensu server
+# print location of client certs
 
 #####
 ###### Install ruby 2.0 with rvm
