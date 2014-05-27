@@ -15,6 +15,8 @@ else
 	pkgmethod=dpkg
 fi
 
+echo "### Package install method is ${pkgmethod}"
+
 checkpackages () {
 	echo "#### Checking for required packages"
 	missingpkg=""
@@ -33,11 +35,24 @@ checkpackages () {
 }	
 
 installpackages () {
-	echo "#### Installing packages: ${reqpackages}"
+	echo "#### Installing packages: ${reqpackages}, with method ${pkgmethod}"
 	if [ "${pkgmethod}" == "rpm" ]; then 
-		yum -q -y install ${reqpackages}
+		yum --enablerepo=epel -y install ${reqpackages}
 	fi
 }
+
+installepel () {
+        echo "### Installing EPEL repo"
+	wget -O /root/epel-release-6-8.noarch.rpm 'http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm'
+        echo "### Installing Remi repo"
+	wget -O /root/remi-release-6.rpm 'http://rpms.famillecollet.com/enterprise/remi-release-6.rpm'
+	rpm -Uvh /root/remi-release-6.rpm /root/epel-release-6-8.noarch.rpm
+}
+        
+installepel
+echo "### Added epel/remi repos, refreshing package list (may take a bit)"
+yum repolist --enablerepo=* 2>/dev/null | egrep -i '^remi\ |^(\**)epel\ '
+        
 
 if [ ! -z "${reqpackages}" ]; then
 	checkpackages reqpackages
@@ -47,7 +62,6 @@ if [ ! -z "${reqpackages}" ]; then
 	installpackages
 fi
 
-exit
 
 echo "#### Configure RabbitMQ"
 echo '[rabbitmq_management].' > /etc/rabbitmq/enabled_plugins
@@ -68,24 +82,25 @@ rabbitsslpath="/etc/rabbitmq/ssl"
 mkdir -p ${rabbitsslpath}
 
 
-mkdir -p ${tmpbdir}/testca/private
-mkdir -p ${tmpbdir}/testca/certs
-touch ${tmpbdir}/testca/index.txt
-echo 01 > ${tmpbdir}/testca/serial
-cd ${tmpbdir}/testca
+mkdir -p ${tmpbdir}/rabbitmqca/private
+mkdir -p ${tmpbdir}/rabbitmqca/certs
+touch ${tmpbdir}/rabbitmqca/index.txt
+echo 01 > ${tmpbdir}/rabbitmqca/serial
+echo "DIE"; exit;
+cd ${tmpbdir}/rabbitmqca
 wget -O "${tmpbdir}/openssl.cnf" 'https://raw.github.com/WebRockit/webrockit-extras/master/rabbitmq/openssl.cnf'
 openssl req -x509 -config ../openssl.cnf -newkey rsa:2048 -days 40000 -out cacert.pem -outform PEM -subj /CN=TestCA/ -nodes
 openssl x509 -in cacert.pem -out cacert.cer -outform DER
 cd ..
 openssl genrsa -out server_key.pem 2048
 openssl req -new -key server_key.pem -out server_req.pem -outform PEM -subj /CN=$(hostname)/O=server/ -nodes
-cd testca
+cd rabbitmqca
 openssl ca -config ../openssl.cnf -in ../server_req.pem -out ../server_cert.pem -notext -batch -extensions server_ca_extensions
 cd ..
 openssl pkcs12 -export -out server_keycert.p12 -in server_cert.pem -inkey server_key.pem -passout pass:DemoPass
 openssl genrsa -out client_key.pem 2048
 openssl req -new -key client_key.pem -out client_req.pem -outform PEM -subj /CN=$(hostname)/O=client/ -nodes
-cd testca
+cd rabbitmqca
 openssl ca -config ../openssl.cnf -in ../client_req.pem -out ../client_cert.pem -notext -batch -extensions client_ca_extensions
 cd ..
 openssl pkcs12 -export -out client_keycert.p12 -in client_cert.pem -inkey client_key.pem -passout pass:DemoPass
