@@ -47,6 +47,7 @@ if [ ! -z "${reqpackages}" ]; then
 	installpackages
 fi
 
+exit
 
 echo "#### Configure RabbitMQ"
 echo '[rabbitmq_management].' > /etc/rabbitmq/enabled_plugins
