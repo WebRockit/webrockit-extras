@@ -8,6 +8,7 @@
 # Install some base requirements
 reqpackages="erlang git openssl rabbitmq-server redis vim-enhanced wget"
 tmpbdir="/var/tmp/`date +%s`.install"
+rabbitcaconf="https://raw.githubusercontent.com/WebRockit/webrockit-extras/sensu-installer-work/rabbitmq/openssl.cnf"
 
 if [ -e /etc/redhat-release ] || [ -L /etc/redhat-release ] ; then
 	pkgmethod=rpm
@@ -37,7 +38,7 @@ checkpackages () {
 installpackages () {
 	echo "#### Installing packages: ${reqpackages}, with method ${pkgmethod}"
 	if [ "${pkgmethod}" == "rpm" ]; then 
-		yum --enablerepo=epel -y install ${reqpackages}
+		yum -q --enablerepo=epel -y install ${reqpackages}
 	fi
 }
 
@@ -79,17 +80,16 @@ echo '[
 chkconfig rabbitmq-server on
 echo "### Generate SSL cert for RabbitMQ"
 rabbitsslpath="/etc/rabbitmq/ssl"
-mkdir -p ${rabbitsslpath}
+mkdir -vp ${rabbitsslpath}
 
 
-mkdir -p ${tmpbdir}/rabbitmqca/private
-mkdir -p ${tmpbdir}/rabbitmqca/certs
+mkdir -vp ${tmpbdir}/rabbitmqca/private
+mkdir -vp ${tmpbdir}/rabbitmqca/certs
 touch ${tmpbdir}/rabbitmqca/index.txt
 echo 01 > ${tmpbdir}/rabbitmqca/serial
-echo "DIE"; exit;
 cd ${tmpbdir}/rabbitmqca
 # XXTODO Put this on github
-wget -O "${tmpbdir}/openssl.cnf" 'https://raw.github.com/WebRockit/webrockit-extras/master/rabbitmq/openssl.cnf'
+wget -O "${tmpbdir}/openssl.cnf" "${rabbitcaconf}"
 openssl req -x509 -config ../openssl.cnf -newkey rsa:2048 -days 40000 -out cacert.pem -outform PEM -subj /CN=TestCA/ -nodes
 openssl x509 -in cacert.pem -out cacert.cer -outform DER
 cd ..
@@ -109,6 +109,9 @@ cp ${tmpbdir}/sensu_ca/cacert.pem /etc/rabbitmq/ssl/cacert.pem
 cp ${tmpbdir}server/cert.pem /etc/rabbitmq/ssl/server_cert.pem
 cp server/key.pem /etc/rabbitmq/ssl/server_key.pem
 
+echo "##### Sensu Server Install Complete!"
+echo "### Copy these files to your clients: ${tmpbdir}/rabbitmqca/client.crt ${tmpbdir}/rabbitmqca/client.key"
+exit
 
 # XXTODO Put skeleton Sensu conf on github
 # Wget Sensu skeleton temple
