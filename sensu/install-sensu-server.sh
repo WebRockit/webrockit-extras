@@ -88,35 +88,35 @@ mkdir -vp ${tmpbdir}/rabbitmqca/certs
 touch ${tmpbdir}/rabbitmqca/index.txt
 echo 01 > ${tmpbdir}/rabbitmqca/serial
 cd ${tmpbdir}/rabbitmqca
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 # XXTODO Put this on github
 wget -O "${tmpbdir}/openssl.cnf" "${rabbitcaconf}"
 openssl req -x509 -config ../openssl.cnf -newkey rsa:2048 -days 40000 -out cacert.pem -outform PEM -subj /CN=TestCA/ -nodes
 openssl x509 -in cacert.pem -out cacert.cer -outform DER
 cd ..
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 openssl genrsa -out server_key.pem 2048
 openssl req -new -key server_key.pem -out server_req.pem -outform PEM -subj /CN=$(hostname)/O=server/ -nodes
 cd rabbitmqca
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 openssl ca -config ../openssl.cnf -in ../server_req.pem -out ../server_cert.pem -notext -batch -extensions server_ca_extensions
 cd ..
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 openssl pkcs12 -export -out server_keycert.p12 -in server_cert.pem -inkey server_key.pem -passout pass:DemoPass
 openssl genrsa -out client_key.pem 2048
 openssl req -new -key client_key.pem -out client_req.pem -outform PEM -subj /CN=$(hostname)/O=client/ -nodes
 cd rabbitmqca
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 openssl ca -config ../openssl.cnf -in ../client_req.pem -out ../client_cert.pem -notext -batch -extensions client_ca_extensions
 cd ..
-echo "#### Working dir: `pwd`"
+echo "## Working dir: `pwd`"
 openssl pkcs12 -export -out client_keycert.p12 -in client_cert.pem -inkey client_key.pem -passout pass:DemoPass
 cp -v ${tmpbdir}/rabbitmqca/cacert.pem /etc/rabbitmq/ssl/cacert.pem
 cp -v ${tmpbdir}/server_cert.pem /etc/rabbitmq/ssl/server_cert.pem
 cp -v ${tmpbdir}/server_key.pem /etc/rabbitmq/ssl/server_key.pem
 
-echo "##### Sensu Server Install Complete!"
-echo "### Copy these files to your clients: ${tmpbdir}/rabbitmqca/cient_cert.pem ${tmpbdir}/rabbitmqca/client_key.pem"
+echo "# Sensu Server Install Complete!"
+echo "# Copy these files to your clients: ${tmpbdir}/rabbitmqca/cient_cert.pem ${tmpbdir}/rabbitmqca/client_key.pem"
 exit
 
 # XXTODO Put skeleton Sensu conf on github
