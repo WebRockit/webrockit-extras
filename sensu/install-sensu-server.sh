@@ -111,12 +111,12 @@ openssl ca -config ../openssl.cnf -in ../client_req.pem -out ../client_cert.pem 
 cd ..
 echo "#### Working dir: `pwd`"
 openssl pkcs12 -export -out client_keycert.p12 -in client_cert.pem -inkey client_key.pem -passout pass:DemoPass
-cp -v ${tmpbdir}/sensu_ca/cacert.pem /etc/rabbitmq/ssl/cacert.pem
-cp -v ${tmpbdir}server/cert.pem /etc/rabbitmq/ssl/server_cert.pem
-cp -v server/key.pem /etc/rabbitmq/ssl/server_key.pem
+cp -v ${tmpbdir}/rabbitmqca/cacert.pem /etc/rabbitmq/ssl/cacert.pem
+cp -v ${tmpbdir}/server_cert.pem /etc/rabbitmq/ssl/server_cert.pem
+cp -v ${tmpbdir}/server_key.pem /etc/rabbitmq/ssl/server_key.pem
 
 echo "##### Sensu Server Install Complete!"
-echo "### Copy these files to your clients: ${tmpbdir}/rabbitmqca/client.crt ${tmpbdir}/rabbitmqca/client.key"
+echo "### Copy these files to your clients: ${tmpbdir}/rabbitmqca/cient_cert.pem ${tmpbdir}/rabbitmqca/client_key.pem"
 exit
 
 # XXTODO Put skeleton Sensu conf on github
